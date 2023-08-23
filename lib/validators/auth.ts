@@ -5,6 +5,7 @@ export const RegisterValidator = z
     email: z.string().email(),
     password: z.string(),
     confirm: z.string(),
+    code: z.string(),
   })
   .refine((data) => data.password === data.confirm, {
     message: "Passwords don't match",

@@ -1,6 +1,9 @@
 import { TailwindIndicator } from "@/components/helper/TailwindIndicator";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import { ClerkProvider } from "@clerk/nextjs";
+import Providers from "@/components/shared/Providers";
+import { Toaster } from "@/components/ui/Toaster";
 
 export const metadata = {
   title: "Create Next App",
@@ -13,12 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        <main className="max-w-7xl mx-auto px-2 lg:px-0 mt-16">{children}</main>
-        <TailwindIndicator />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <Navbar />
+          <Providers>{children}</Providers>
+          <Toaster />
+          <TailwindIndicator />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -1,17 +1,12 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
-import { NextResponse } from 'next/server'
+import { authMiddleware } from "@clerk/nextjs";
 
-import type { NextRequest } from 'next/server'
+// This example protects all routes including api/trpc routes
+// Please edit this to allow other routes to be public as needed.
+// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
+export default authMiddleware({
+  publicRoutes: ["/"],
+});
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-
-  // Create a Supabase client configured to use cookies
-  const supabase = createMiddlewareClient({ req, res })
-
-  // Refresh session if expired - required for Server Components
-  // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
-  await supabase.auth.getSession()
-
-  return res
-}
+export const config = {
+  matcher: ["/((?!.*\\..*|_next).*)", "/(api|trpc)(.*)"],
+};

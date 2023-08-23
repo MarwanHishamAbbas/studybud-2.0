@@ -1,5 +1,3 @@
-"use client";
-
 import { FC } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/Dialog";
 import { Button } from "../ui/Button";

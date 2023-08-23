@@ -7,7 +7,6 @@ import {
   DialogTrigger,
 } from "../ui/Dialog";
 import { Button } from "../ui/Button";
-
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
@@ -15,6 +14,7 @@ import { RoomCreationRequest } from "@/lib/validators/room";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToasts } from "@/hooks/use-custom-toast";
 import { Input } from "@/components/ui/Input";
+import { revalidatePath } from "next/cache";
 
 interface CreateRoomProps {}
 
@@ -28,6 +28,7 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
         title: input,
       };
       const { data } = await axios.post("/api/room/create", payload);
+
       return data as string;
     },
     onError: (error) => {
@@ -35,14 +36,20 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
         if (error.response?.status === 401) {
           return loginToast();
         }
+        if (error.response?.status === 409) {
+          return toast({
+            title: "Room already exists.",
+            description: "Please choose a different name.",
+            variant: "destructive",
+          });
+        }
       }
     },
     onSuccess: (data) => {
-      setInput("");
-      //   router.push(`/rooms/${data}`);
-
+      router.push(`/room/${data}`);
+      revalidatePath("/");
       return toast({
-        title: `"${data}" room was created successfully`,
+        title: `Room was created successfully`,
         description: "Start creating posts now",
       });
     },

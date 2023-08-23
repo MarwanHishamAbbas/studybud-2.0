@@ -1,3 +1,4 @@
+import RoomsFeed from "@/components/RoomsFeed";
 import HomeHeader from "@/components/layout/HomeHeader";
 import { db } from "@/lib/db";
 import { FC } from "react";
@@ -8,8 +9,9 @@ const Home: FC<HomeProps> = async ({}) => {
   const roomsCount = await db.room.findMany({});
 
   return (
-    <main className="lg:w-1/2 mx-auto">
+    <main className="space-y-12">
       <HomeHeader roomsCount={roomsCount.length} />
+      <RoomsFeed />
     </main>
   );
 };

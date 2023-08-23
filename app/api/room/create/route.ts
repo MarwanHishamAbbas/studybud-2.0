@@ -13,13 +13,27 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return new Response("Unauthorized", { status: 401 });
     }
+    const roomExists = await db.room.findFirst({
+      where: {
+        name: title,
+      },
+    });
+    if (roomExists) {
+      return new Response("Room already exists", { status: 409 });
+    }
     const createdRoom = await db.room.create({
       data: {
         name: title,
         creatorId: user.id,
       },
     });
-    return new Response(createdRoom.name);
+    await db.subscription.create({
+      data: {
+        userId: user.id,
+        roomId: createdRoom.id,
+      },
+    });
+    return new Response(createdRoom.id);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 });

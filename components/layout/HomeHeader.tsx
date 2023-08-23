@@ -8,10 +8,10 @@ interface HomeHeaderProps {
 
 const HomeHeader: FC<HomeHeaderProps> = ({ roomsCount }) => {
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-center justify-between border-b pb-6">
       <div>
-        <h1 className="">Rooms</h1>
-        <span className="text-gray-400">{roomsCount}</span>
+        <h1 className="text-xl font-semibold">ROOMS</h1>
+        <span className="text-gray-500">{roomsCount} rooms available</span>
       </div>
       <CreateRoom />
     </header>

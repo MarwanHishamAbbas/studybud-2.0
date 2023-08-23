@@ -41,28 +41,29 @@ export interface ButtonProps
   children: React.ReactNode;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({
-    className,
-    variant,
-    size,
-    isLoading,
-    children,
-    asChild = false,
-    ...props
-  }) => {
-    return (
-      <button
-        disabled={isLoading}
-        {...props}
-        className={cn(buttonVariants({ variant, size, className }))}
-      >
-        {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
-        {children}
-      </button>
-    );
-  }
-);
+import { FC } from "react";
+
+const Button: FC<ButtonProps> = ({
+  className,
+  variant,
+  size,
+  isLoading,
+  children,
+  asChild = false,
+  ...props
+}) => {
+  return (
+    <button
+      disabled={isLoading}
+      {...props}
+      className={cn(buttonVariants({ variant, size, className }))}
+    >
+      {isLoading && <Loader2 className="w-5 h-5 animate-spin" />}
+      {children}
+    </button>
+  );
+};
+
 Button.displayName = "Button";
 
 export { Button, buttonVariants };

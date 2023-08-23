@@ -10,22 +10,37 @@ import { Button } from "../ui/Button";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import { RoomCreationRequest } from "@/lib/validators/room";
+import {
+  RoomCreationRequest,
+  RoomValidator,
+  topicList,
+} from "@/lib/validators/room";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToasts } from "@/hooks/use-custom-toast";
 import { Input } from "@/components/ui/Input";
 import { revalidatePath } from "next/cache";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 
 interface CreateRoomProps {}
 
 const CreateRoom: FC<CreateRoomProps> = ({}) => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
+  const [topic, setTopic] = useState<string>("");
   const { loginToast } = useCustomToasts();
   const { mutate: createRoom, isLoading } = useMutation({
     mutationFn: async () => {
       const payload: RoomCreationRequest = {
         title: input,
+        topic: topic,
       };
       const { data } = await axios.post("/api/room/create", payload);
 
@@ -40,6 +55,14 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
           return toast({
             title: "Room already exists.",
             description: "Please choose a different name.",
+            variant: "destructive",
+          });
+        }
+        if (error.response?.status === 500) {
+          return toast({
+            title: "Internal Server Error.",
+            description:
+              "Could not create a room at this time. Please try later",
             variant: "destructive",
           });
         }
@@ -70,10 +93,22 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
           placeholder="Room Name..."
           onChange={(e) => setInput(e.target.value)}
         />
+        <Select required onValueChange={(e) => setTopic(e)}>
+          <SelectTrigger className="w-[180px] mx-auto">
+            <SelectValue placeholder="Select a topic" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {topicList.map((topic) => (
+                <SelectItem value={topic}>{topic}</SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <Button
           className="w-fit mx-auto"
           isLoading={isLoading}
-          disabled={input.length === 0}
+          disabled={input.length === 0 || topic.length === 0}
           onClick={() => createRoom()}
         >
           Create Room

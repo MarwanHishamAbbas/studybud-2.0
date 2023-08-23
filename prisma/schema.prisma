@@ -37,6 +37,7 @@ model Room {
   creator     User?          @relation("CreatedBy", fields: [creatorId], references: [id])
   creatorId   String?
   subscribers Subscription[]
+  topic       String
 
   @@index([name])
 }

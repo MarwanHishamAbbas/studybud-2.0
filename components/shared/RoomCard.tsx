@@ -13,6 +13,7 @@ import { db } from "@/lib/db";
 import { Users } from "lucide-react";
 import Link from "next/link";
 import { formatTimeToNow } from "@/lib/utils";
+import { Badge } from "../ui/Badge";
 
 interface RoomCardProps {
   room: Room | null;
@@ -50,19 +51,22 @@ const RoomCard: FC<RoomCardProps> = async ({ room }) => {
                 {author.emailAddresses[0].emailAddress}
               </p>
             </div>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-sm hidden lg:block">
               {formatTimeToNow(new Date(room?.createdAt as Date))}
             </p>
           </div>
         </CardHeader>
         <CardContent>
-          <CardTitle>{room?.name}</CardTitle>
+          <CardTitle className="text-xl lg:text-2xl">{room?.name}</CardTitle>
         </CardContent>
-        <CardFooter className="space-x-2">
-          <Users className="w-4 h-4 text-primary" />
-          <p className="text-sm text-gray-500">
-            {subscribers?._count.subscribers} Joined
-          </p>
+        <CardFooter className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-primary" />
+            <p className="text-sm text-gray-500">
+              {subscribers?._count.subscribers} Joined
+            </p>
+          </div>
+          <Badge>{room?.topic}</Badge>
         </CardFooter>
       </Card>
     </Link>

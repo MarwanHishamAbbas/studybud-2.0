@@ -7,7 +7,8 @@ import { z } from "zod";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title } = RoomValidator.parse(body);
+    const { title, topic } = RoomValidator.parse(body);
+    console.log(title, topic);
     const user = await currentUser();
 
     if (!user) {
@@ -25,6 +26,7 @@ export async function POST(request: NextRequest) {
       data: {
         name: title,
         creatorId: user.id,
+        topic: topic,
       },
     });
     await db.subscription.create({

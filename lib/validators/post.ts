@@ -9,4 +9,9 @@ export const PostValidator = z.object({
   content: z.any(),
 });
 
+export const PostValidatorPayload = z.object({
+  postId: z.string(),
+});
+
 export type PostCreationRequest = z.infer<typeof PostValidator>;
+export type PostRequestPayload = z.infer<typeof PostValidatorPayload>;

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { RoomSubscriptionValidator } from "@/lib/validators/room";
+import { PostValidatorPayload } from "@/lib/validators/post";
 import { revalidatePath } from "next/cache";
 
 import { NextRequest } from "next/server";
@@ -8,16 +8,16 @@ import { z } from "zod";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { roomId } = RoomSubscriptionValidator.parse(body);
+    const { postId } = PostValidatorPayload.parse(body);
 
-    const deletedRoom = await db.room.delete({
+    const deletedPost = await db.post.delete({
       where: {
-        id: roomId,
+        id: postId,
       },
     });
-    revalidatePath("/");
+    revalidatePath(`/room/${deletedPost.roomId}`);
 
-    return new Response(deletedRoom.name);
+    return new Response(deletedPost.roomId);
   } catch (error) {
     error;
     if (error instanceof z.ZodError) {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     return new Response(
-      "Could not delete the room at this time. Please try later",
+      "Could not delete the post at this time. Please try later",
       { status: 500 }
     );
   }

@@ -185,7 +185,7 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
         className="self-end "
         size="lg"
         onClick={() => createPost()}
-        disabled={posting}
+        disabled={posting || title.length === 0}
       >
         Post
       </Button>

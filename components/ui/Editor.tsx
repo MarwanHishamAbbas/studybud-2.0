@@ -80,10 +80,7 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
 
   const initializeEditor = useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default;
-    const Header = (await import("@editorjs/header")).default;
     const Embed = (await import("@editorjs/embed")).default;
-    const Table = (await import("@editorjs/table")).default;
-    const List = (await import("@editorjs/list")).default;
     const Code = (await import("@editorjs/code")).default;
 
     const InlineCode = (await import("@editorjs/inline-code")).default;
@@ -99,8 +96,6 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
         inlineToolbar: true,
         data: { blocks: [] },
         tools: {
-          header: Header,
-
           image: {
             class: ImageTool,
             config: {
@@ -119,10 +114,10 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
               },
             },
           },
-          list: List,
+
           code: Code,
           inlineCode: InlineCode,
-          table: Table,
+
           embed: Embed,
         },
       });
@@ -159,7 +154,7 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
   }
 
   return (
-    <>
+    <div className="flex justify-end flex-col gap-2 mb-10">
       <div className="w-full bg-input mt-10 p-5 rounded-lg border">
         <form className="w-fit">
           <div className="prose prose-stone dark:prose-invert">
@@ -170,6 +165,7 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
                 // @ts-ignore
                 _titleRef.current = e;
               }}
+              {...ref}
               placeholder="Title"
               className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
             />
@@ -186,13 +182,13 @@ export const Editor: React.FC<EditorProps> = ({ roomId }) => {
       </div>
       <Button
         isLoading={posting}
-        className="float-right mt-2"
+        className="self-end "
         size="lg"
         onClick={() => createPost()}
         disabled={posting}
       >
         Post
       </Button>
-    </>
+    </div>
   );
 };

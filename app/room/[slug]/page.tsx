@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
@@ -6,6 +6,8 @@ import RoomHeader from "@/components/room/RoomHeader";
 import RoomSubscribers from "@/components/room/RoomSubscribers";
 import { Editor } from "@/components/ui/Editor";
 import { UserCheck2 } from "lucide-react";
+import Loading from "@/components/shared/Loading";
+import PostsFeed from "@/components/room/post/PostsFeed";
 
 interface pageProps {
   params: {
@@ -50,7 +52,11 @@ const page: FC<pageProps> = async ({ params }) => {
         ) : (
           <Editor roomId={room?.id as string} />
         )}
+        <Suspense fallback={<Loading />}>
+          <PostsFeed roomId={room?.id as string} />
+        </Suspense>
       </main>
+
       <RoomSubscribers room={room} subscribers={subscribers} />
     </div>
   );

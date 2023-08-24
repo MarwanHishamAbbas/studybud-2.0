@@ -12,7 +12,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
   return (
     <Input
       className="w-1/3 hidden lg:flex bg-background"
-      placeholder="Search..."
+      placeholder="Search for a room..."
       onChange={(event) => {
         setTimeout(() => {
           router.replace(`/?search=${event.target.value}`);

@@ -14,7 +14,7 @@ import { RoomValidatorPayload, topicList } from "@/lib/validators/room";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToasts } from "@/hooks/use-custom-toast";
 import { Input } from "@/components/ui/Input";
-import { revalidatePath } from "next/cache";
+
 import {
   Select,
   SelectContent,
@@ -63,9 +63,10 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
         }
       }
     },
+
     onSuccess: (data) => {
       router.push(`/room/${data}`);
-      revalidatePath("/");
+
       return toast({
         title: `Room was created successfully`,
         description: "Start creating posts now",

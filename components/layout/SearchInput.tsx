@@ -11,7 +11,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
 
   return (
     <Input
-      className="w-1/3 hidden lg:flex"
+      className="w-1/3 hidden lg:flex bg-background"
       placeholder="Search..."
       onChange={(event) => {
         setTimeout(() => {

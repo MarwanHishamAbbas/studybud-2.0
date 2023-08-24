@@ -1,4 +1,5 @@
 import SubscribeToggle from "@/components/layout/SubscribeToggle";
+import RoomOptions from "@/components/room/RoomOptions";
 import { Button } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
@@ -28,16 +29,20 @@ const page: FC<pageProps> = async ({ params }) => {
   const room = await db.room.findFirst({
     where: { id: slug },
   });
+
   return (
     <div className="space-y-12">
       <header className="space-y-7">
-        <div className="py-3 bg-secondary rounded-lg">
+        <div className="py-3 pr-4 bg-secondary rounded-lg flex items-center justify-between">
           <Link href="/">
-            <Button variant="ghost" className="group">
+            <Button variant="secondary" className="group">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-all" />
               <p>All Rooms</p>
             </Button>
           </Link>
+          {room?.creatorId === user?.id && (
+            <RoomOptions roomId={room?.id as string} />
+          )}
         </div>
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 justify-between lg:items-center">
           <h1 className="text-3xl font-semibold text-primary">{room?.name}</h1>

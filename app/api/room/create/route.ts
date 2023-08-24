@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { RoomValidator } from "@/lib/validators/room";
 import { currentUser } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 import { z } from "zod";
 
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
         roomId: createdRoom.id,
       },
     });
+    revalidatePath("/");
     return new Response(createdRoom.id);
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -5,8 +5,11 @@ import { Button } from "../ui/Button";
 import { Room } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { SubscribeToRoomPayload } from "@/lib/validators/room";
-import { useCustomToasts } from "@/hooks/use-custom-toast";
+import {
+  SubscribeToRoomPayload,
+  UnubscribeToRoomPayload,
+} from "@/lib/validators/room";
+
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +19,6 @@ interface SubscribeToggleProps {
 }
 
 const SubscribeToggle: FC<SubscribeToggleProps> = ({ isSubscribed, room }) => {
-  const { loginToast } = useCustomToasts();
   const router = useRouter();
   const { mutate: subscribe, isLoading: subscribing } = useMutation({
     mutationFn: async () => {
@@ -47,8 +49,9 @@ const SubscribeToggle: FC<SubscribeToggleProps> = ({ isSubscribed, room }) => {
   });
   const { mutate: unsubscribe, isLoading: unsubscribing } = useMutation({
     mutationFn: async () => {
-      const payload: SubscribeToRoomPayload = {
+      const payload: UnubscribeToRoomPayload = {
         roomId: room?.id as string,
+        userId: room?.creatorId as string,
       };
       const { data } = await axios.post("/api/room/unsubscribe", payload);
       return data as string;

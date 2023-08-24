@@ -4,7 +4,7 @@ import { currentUser, UserButton } from "@clerk/nextjs";
 import type { User } from "@clerk/nextjs/api";
 import Link from "next/link";
 import AuthButton from "../shared/AuthButton";
-import { Input } from "../ui/Input";
+
 import SearchInput from "./SearchInput";
 
 interface NavbarProps {}

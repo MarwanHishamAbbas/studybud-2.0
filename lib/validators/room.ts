@@ -11,9 +11,16 @@ export const RoomValidator = z.object({
 export const RoomSubscriptionValidator = z.object({
   roomId: z.string(),
 });
+export const RoomUnsubscriptionValidator = z.object({
+  roomId: z.string(),
+  userId: z.string(),
+});
 
 export type RoomValidatorPayload = z.infer<typeof RoomValidator>;
 export type SubscribeToRoomPayload = z.infer<typeof RoomSubscriptionValidator>;
+export type UnubscribeToRoomPayload = z.infer<
+  typeof RoomUnsubscriptionValidator
+>;
 
 export const topicList = [
   "Python",

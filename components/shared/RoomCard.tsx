@@ -47,9 +47,14 @@ const RoomCard: FC<RoomCardProps> = async ({ room }) => {
                   {author.lastName?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <p className="text-primary">
-                {author.emailAddresses[0].emailAddress}
-              </p>
+              <div>
+                <h1>
+                  {author.firstName} {author.lastName}
+                </h1>
+                <p className="text-primary text-sm">
+                  {author.emailAddresses[0].emailAddress}
+                </p>
+              </div>
             </div>
             <p className="text-gray-500 text-sm hidden lg:block">
               {formatTimeToNow(new Date(room?.createdAt as Date))}

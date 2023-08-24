@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { RoomSubscriptionValidator } from "@/lib/validators/room";
+import { RoomUnsubscriptionValidator } from "@/lib/validators/room";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest } from "next/server";
 import { z } from "zod";
@@ -7,7 +7,7 @@ import { z } from "zod";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { roomId } = RoomSubscriptionValidator.parse(body);
+    const { roomId, userId } = RoomUnsubscriptionValidator.parse(body);
     const user = await currentUser();
 
     if (!user) {
@@ -22,6 +22,24 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+    const mostRecentSubscribers = await db.subscription.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 2,
+    });
+
+    if (user?.id === userId) {
+      console.log("I'm no longer the author");
+      await db.room.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          creatorId: mostRecentSubscribers[0].userId,
+        },
+      });
+    }
 
     return new Response(roomId);
   } catch (error) {

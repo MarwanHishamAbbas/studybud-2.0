@@ -8,7 +8,6 @@ import { useMutation } from "@tanstack/react-query";
 import { SubscribeToRoomPayload } from "@/lib/validators/room";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 interface RoomOptionsProps {
   roomId: string;

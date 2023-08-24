@@ -13,7 +13,7 @@ const TopicSidebar: FC<TopicSidebarProps> = ({}) => {
   const topicQuery = searchParams.get("topic");
 
   return (
-    <Card className="basis-1/4 h-fit sticky top-5 hidden lg:block ">
+    <Card className=" h-fit sticky top-5 hidden lg:block ">
       <CardHeader>
         <h1 className="text-xl font-semibold">Browse Topics</h1>
       </CardHeader>

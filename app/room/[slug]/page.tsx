@@ -1,12 +1,9 @@
-import SubscribeToggle from "@/components/layout/SubscribeToggle";
-import RoomOptions from "@/components/room/RoomOptions";
-import { Button } from "@/components/ui/Button";
+import { FC } from "react";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { FC } from "react";
+import RoomHeader from "@/components/room/RoomHeader";
+import RoomSubscribers from "@/components/room/RoomSubscribers";
 
 interface pageProps {
   params: {
@@ -16,39 +13,35 @@ interface pageProps {
 
 const page: FC<pageProps> = async ({ params }) => {
   const user: User | null = await currentUser();
+
   const { slug } = params;
-  const subscription = await db.subscription.findFirst({
+  const subscriptionState = await db.subscription.findFirst({
     where: {
       roomId: slug,
       userId: user?.id,
     },
   });
 
-  const isSubscribed = !!subscription;
+  const subscribers = await db.subscription.findMany({
+    where: {
+      roomId: slug,
+    },
+    select: {
+      userId: true,
+    },
+  });
+  const isSubscribed = !!subscriptionState;
 
   const room = await db.room.findFirst({
     where: { id: slug },
   });
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-7">
-        <div className="py-3 pr-4 bg-secondary rounded-lg flex items-center justify-between">
-          <Link href="/">
-            <Button variant="secondary" className="group">
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-all" />
-              <p>All Rooms</p>
-            </Button>
-          </Link>
-          {room?.creatorId === user?.id && (
-            <RoomOptions roomId={room?.id as string} />
-          )}
-        </div>
-        <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 justify-between lg:items-center">
-          <h1 className="text-3xl font-semibold text-primary">{room?.name}</h1>
-          <SubscribeToggle isSubscribed={isSubscribed} room={room} />
-        </div>
-      </header>
+    <div className=" gap-10 lg:grid grid-cols-3">
+      <main className="col-span-2">
+        <RoomHeader user={user} room={room} isSubscribed={isSubscribed} />
+      </main>
+      <RoomSubscribers room={room} subscribers={subscribers} />
     </div>
   );
 };

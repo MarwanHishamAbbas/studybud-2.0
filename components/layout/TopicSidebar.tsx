@@ -14,7 +14,7 @@ const TopicSidebar: FC<TopicSidebarProps> = ({}) => {
 
   return (
     <Card className=" h-fit sticky top-5 hidden lg:block ">
-      <CardHeader>
+      <CardHeader className="border-b mb-5 py-5">
         <h1 className="text-xl font-semibold">Browse Topics</h1>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-5 ">

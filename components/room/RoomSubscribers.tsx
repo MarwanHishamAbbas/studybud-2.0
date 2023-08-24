@@ -24,7 +24,7 @@ const RoomSubscribers: FC<RoomSubscribersProps> = async ({
 
   return (
     <Card className="basis-1/4 h-fit sticky top-5 hidden lg:block">
-      <CardHeader>
+      <CardHeader className="border-b mb-5 py-5">
         <h1 className="text-xl font-semibold">Subscribers</h1>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-5 ">

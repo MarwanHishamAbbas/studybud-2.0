@@ -48,7 +48,7 @@ const page: FC<pageProps> = async ({ params }) => {
             <h1 className="text-3xl ">Subscribe to Post</h1>
           </div>
         ) : (
-          <Editor />
+          <Editor roomId={room?.id as string} />
         )}
       </main>
       <RoomSubscribers room={room} subscribers={subscribers} />

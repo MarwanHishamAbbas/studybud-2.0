@@ -2,8 +2,14 @@
 
 import EditorJS from "@editorjs/editorjs";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
 
@@ -11,16 +17,17 @@ import { toast } from "@/hooks/use-toast";
 import { uploadFiles } from "@/lib/uploadthing";
 import { PostCreationRequest } from "@/lib/validators/post";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import "@/app/editor.css";
 import { Button } from "./Button";
 
-interface EditorProps {}
+interface EditorProps {
+  roomId: string;
+}
 
-export const Editor: React.FC<EditorProps> = ({}) => {
+export const Editor: React.FC<EditorProps> = ({ roomId }) => {
   const [title, setTitle] = useState<string>("");
-  const pathname = usePathname();
   const ref = useRef<EditorJS>();
   const _titleRef = useRef<HTMLTextAreaElement>(null);
   const router = useRouter();
@@ -32,20 +39,40 @@ export const Editor: React.FC<EditorProps> = ({}) => {
       const payload: PostCreationRequest = {
         title,
         content: blocks,
+        roomId,
       };
-      // const { data } = await axios.post("/api/room/post/create", payload);
-      // return data;
+      const { data } = await axios.post("/api/room/post/create", payload);
+      return data;
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your post was not published. Please try again.",
-        variant: "destructive",
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          return toast({
+            title: "Post already exists.",
+            description: "Please choose a different name.",
+            variant: "destructive",
+          });
+        }
+        if (error.response?.status === 500) {
+          return toast({
+            title: "Internal Server Error.",
+            description:
+              "Could not create a post at this time. Please try later",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: () => {
+      ref.current?.clear();
+      setTitle("");
+      startTransition(() => {
+        // Refresh the current route and fetch new data from the server without
+        // losing client-side browser or React state.
+        router.refresh();
       });
-    },
-    onSuccess: (data) => {
-      router.push(`${pathname}/${data}`);
       return toast({
+        title: "Post Created Successfully",
         description: "Your post has been published.",
       });
     },
@@ -138,11 +165,11 @@ export const Editor: React.FC<EditorProps> = ({}) => {
           <div className="prose prose-stone dark:prose-invert">
             <TextareaAutosize
               onChange={(e) => setTitle(e.target.value)}
+              value={title}
               ref={(e) => {
                 // @ts-ignore
                 _titleRef.current = e;
               }}
-              // {...rest}
               placeholder="Title"
               className="w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none"
             />

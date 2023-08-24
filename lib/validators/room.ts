@@ -8,7 +8,12 @@ export const RoomValidator = z.object({
   topic: z.string(),
 });
 
-export type RoomCreationRequest = z.infer<typeof RoomValidator>;
+export const RoomSubscriptionValidator = z.object({
+  roomId: z.string(),
+});
+
+export type RoomValidatorPayload = z.infer<typeof RoomValidator>;
+export type SubscribeToRoomPayload = z.infer<typeof RoomSubscriptionValidator>;
 
 export const topicList = [
   "Python",

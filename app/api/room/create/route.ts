@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { title, topic } = RoomValidator.parse(body);
-    console.log(title, topic);
+
     const user = await currentUser();
 
     if (!user) {

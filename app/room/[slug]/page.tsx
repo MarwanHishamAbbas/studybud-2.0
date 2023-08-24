@@ -1,10 +1,11 @@
+import SubscribeToggle from "@/components/layout/SubscribeToggle";
 import { Button } from "@/components/ui/Button";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { FC, use } from "react";
+import { FC } from "react";
 
 interface pageProps {
   params: {
@@ -38,9 +39,9 @@ const page: FC<pageProps> = async ({ params }) => {
             </Button>
           </Link>
         </div>
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-semibold text-primary">{room?.name}</h1>
-          <Button>{isSubscribed ? "Leave Room" : "Subscribe"}</Button>
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 justify-between lg:items-center">
+          <h1 className="text-3xl font-semibold text-primary">{room?.name}</h1>
+          <SubscribeToggle isSubscribed={isSubscribed} room={room} />
         </div>
       </header>
     </div>

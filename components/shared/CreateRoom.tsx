@@ -10,11 +10,7 @@ import { Button } from "../ui/Button";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
-import {
-  RoomCreationRequest,
-  RoomValidator,
-  topicList,
-} from "@/lib/validators/room";
+import { RoomValidatorPayload, topicList } from "@/lib/validators/room";
 import { toast } from "@/hooks/use-toast";
 import { useCustomToasts } from "@/hooks/use-custom-toast";
 import { Input } from "@/components/ui/Input";
@@ -24,7 +20,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
@@ -38,7 +33,7 @@ const CreateRoom: FC<CreateRoomProps> = ({}) => {
   const { loginToast } = useCustomToasts();
   const { mutate: createRoom, isLoading } = useMutation({
     mutationFn: async () => {
-      const payload: RoomCreationRequest = {
+      const payload: RoomValidatorPayload = {
         title: input,
         topic: topic,
       };

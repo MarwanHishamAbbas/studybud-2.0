@@ -1,8 +1,6 @@
 "use client";
 import { FC } from "react";
-
 import { Loader2, Trash2 } from "lucide-react";
-
 import { toast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";

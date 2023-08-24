@@ -2,25 +2,17 @@ import { FC, Suspense } from "react";
 import { db } from "@/lib/db";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { User } from "@prisma/client";
-import RoomSubscribers from "@/components/room/RoomSubscribers";
 import Loading from "@/components/shared/Loading";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
 import { formatTimeToNow } from "@/lib/utils";
 
-import Link from "next/link";
-
-import { MessageCircleIcon } from "lucide-react";
 import EditorOutput from "@/components/ui/EditorOutput";
 import PostHeader from "@/components/room/post/PostHeader";
+import PostCommentInput from "@/components/room/post/PostCommentInput";
+import PostComments from "@/components/room/post/PostComments";
 
 interface pageProps {
   params: {
@@ -32,25 +24,24 @@ const page: FC<pageProps> = async ({ params }) => {
   const user: User | null = await currentUser();
   const { postSlug } = params;
 
-  const subscribers = await db.subscription.findMany({
-    where: {
-      roomId: postSlug,
-    },
-    select: {
-      userId: true,
-    },
-  });
-
   const post = await db.post.findFirst({
     where: { id: postSlug },
   });
   const author = await clerkClient.users.getUser(post?.authorId as string);
 
+  const comments = await db.comment.findMany({
+    where: {
+      postId: post?.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <div className=" gap-10 lg:grid grid-cols-3">
       <main className="col-span-2 space-y-5">
         <PostHeader user={user} post={post} />
-
         <Suspense fallback={<Loading />}>
           <Card>
             <CardHeader>
@@ -88,15 +79,10 @@ const page: FC<pageProps> = async ({ params }) => {
               </CardTitle>
               <EditorOutput content={post?.content} />
             </CardContent>
-
-            <CardFooter className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <MessageCircleIcon className="w-4 h-4 text-primary" />
-                <p className="text-sm text-gray-500">10 Comments</p>
-              </div>
-            </CardFooter>
+            <PostCommentInput postId={post?.id as string} />
           </Card>
         </Suspense>
+        <PostComments comments={comments} />
       </main>
     </div>
   );

@@ -15,6 +15,7 @@ import PostContent from "./PostContent";
 import Link from "next/link";
 
 import { MessageCircleIcon } from "lucide-react";
+import { db } from "@/lib/db";
 
 interface PostCardProps {
   post: Post | null;
@@ -22,6 +23,11 @@ interface PostCardProps {
 
 const PostCard: FC<PostCardProps> = async ({ post }) => {
   const author = await clerkClient.users.getUser(post?.authorId as string);
+  const commentsCount = await db.comment.findMany({
+    where: {
+      postId: post?.id,
+    },
+  });
 
   return (
     <Card>
@@ -62,7 +68,9 @@ const PostCard: FC<PostCardProps> = async ({ post }) => {
       <CardFooter className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <MessageCircleIcon className="w-4 h-4 text-primary" />
-          <p className="text-sm text-gray-500">10 Comments</p>
+          <p className="text-sm text-gray-500">
+            {commentsCount.length} Comments
+          </p>
         </div>
       </CardFooter>
     </Card>

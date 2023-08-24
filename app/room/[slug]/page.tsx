@@ -45,7 +45,7 @@ const page: FC<pageProps> = async ({ params }) => {
       <main className="col-span-2">
         <RoomHeader user={user} room={room} isSubscribed={isSubscribed} />
         {!isSubscribed ? (
-          <div className="text-center space-y-2 text-gray-500 mt-10">
+          <div className="text-center space-y-2 text-gray-500 my-10">
             <UserCheck2 className="w-20 h-20 mx-auto" />
             <h1 className="text-3xl ">Subscribe to Post</h1>
           </div>

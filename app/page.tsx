@@ -1,13 +1,13 @@
 import RoomsFeed from "@/components/RoomsFeed";
 import HomeHeader from "@/components/layout/HomeHeader";
 import { db } from "@/lib/db";
-import { FC, Suspense } from "react";
+import { FC, ReactElement, Suspense } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import Loading from "@/components/shared/Loading";
 import { clerkClient } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
-interface HomeProps {
+interface HomeProps extends ReactElement<any, any> {
   searchParams: {
     topic?: string;
     search?: string;

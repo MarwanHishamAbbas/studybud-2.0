@@ -23,7 +23,7 @@ const Navbar: FC<NavbarProps> = async ({}) => {
             quality={100}
           />
           <h1 className="text-xl lg:text-2xl font-bold hidden sm:block">
-            StudyBud
+            StudyBud 2.0
           </h1>
         </Link>
         <SearchInput />

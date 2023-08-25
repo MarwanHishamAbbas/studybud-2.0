@@ -36,7 +36,7 @@ const PostCommentCard: FC<PostCommentCardProps> = async ({ comment }) => {
               </p>
             </div>
           </div>
-          <p className="text-gray-500 text-sm hidden lg:block">
+          <p className="text-gray-500 text-sm">
             {formatTimeToNow(new Date(comment?.createdAt as Date))}
           </p>
         </div>

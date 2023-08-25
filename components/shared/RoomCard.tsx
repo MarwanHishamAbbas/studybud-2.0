@@ -56,7 +56,7 @@ const RoomCard: FC<RoomCardProps> = async ({ room }) => {
                 </p>
               </div>
             </div>
-            <p className="text-gray-500 text-sm hidden lg:block">
+            <p className="text-gray-500 text-sm">
               {formatTimeToNow(new Date(room?.createdAt as Date))}
             </p>
           </div>

@@ -54,7 +54,7 @@ const PostCard: FC<PostCardProps> = async ({ post }) => {
               </p>
             </div>
           </div>
-          <p className="text-gray-500 text-sm hidden lg:block">
+          <p className="text-gray-500 text-sm">
             {formatTimeToNow(new Date(post?.createdAt as Date))}
           </p>
         </div>

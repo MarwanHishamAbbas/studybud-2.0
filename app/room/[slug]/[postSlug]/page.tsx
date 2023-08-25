@@ -13,6 +13,7 @@ import EditorOutput from "@/components/ui/EditorOutput";
 import PostHeader from "@/components/room/post/PostHeader";
 import PostCommentInput from "@/components/room/post/PostCommentInput";
 import PostComments from "@/components/room/post/PostComments";
+import { MessageCircle } from "lucide-react";
 
 interface pageProps {
   params: {
@@ -28,6 +29,15 @@ const page: FC<pageProps> = async ({ params }) => {
     where: { id: postSlug },
   });
   const author = await clerkClient.users.getUser(post?.authorId as string);
+
+  const subscriptionState = await db.subscription.findFirst({
+    where: {
+      roomId: post?.roomId,
+      userId: user?.id,
+    },
+  });
+
+  const isSubscribed = !!subscriptionState;
 
   const comments = await db.comment.findMany({
     where: {
@@ -67,7 +77,7 @@ const page: FC<pageProps> = async ({ params }) => {
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-500 text-sm hidden lg:block">
+                <p className="text-gray-500 text-sm  ">
                   {formatTimeToNow(new Date(post?.createdAt as Date))}
                 </p>
               </div>
@@ -79,7 +89,14 @@ const page: FC<pageProps> = async ({ params }) => {
               </CardTitle>
               <EditorOutput content={post?.content} />
             </CardContent>
-            <PostCommentInput postId={post?.id as string} />
+            {isSubscribed ? (
+              <PostCommentInput postId={post?.id as string} />
+            ) : (
+              <div className="text-center space-y-2 text-gray-500 py-10">
+                <MessageCircle className="w-10 h-10 mx-auto" />
+                <h1 className="text-3xl ">Subscribe to Comment</h1>
+              </div>
+            )}
           </Card>
         </Suspense>
         <PostComments comments={comments} />

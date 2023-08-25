@@ -18,9 +18,9 @@ const Home: FC<HomeProps> = async ({ searchParams }) => {
   const topUsers = await clerkClient.users.getUserList();
   const roomsCount = await db.room.findMany({
     where: {
-      topic: searchParams.topic,
+      topic: searchParams?.topic,
       name: {
-        contains: searchParams.search,
+        contains: searchParams?.search,
         mode: "insensitive",
       },
     },

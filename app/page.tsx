@@ -31,7 +31,12 @@ export default async function HomePage({ searchParams }: HomeProps) {
       <div className=" col-span-2 space-y-12">
         <HomeHeader roomsCount={roomsCount.length} />
         <Suspense fallback={<Loading />}>
-          <RoomsFeed topic={searchParams.topic} search={searchParams.search} />
+          <div>
+            <RoomsFeed
+              topic={searchParams.topic}
+              search={searchParams.search}
+            />
+          </div>
         </Suspense>
       </div>
 

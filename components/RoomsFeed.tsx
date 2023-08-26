@@ -3,6 +3,7 @@ import { FC } from "react";
 
 import RoomCard from "./shared/RoomCard";
 import { AlertCircle } from "lucide-react";
+import { Room } from "@prisma/client";
 
 interface RoomsFeedProps {
   topic?: string;
@@ -10,15 +11,7 @@ interface RoomsFeedProps {
 }
 
 const RoomsFeed: FC<RoomsFeedProps> = async ({ topic, search }) => {
-  const rooms = await db.room.findMany({
-    where: {
-      topic: topic,
-      name: { contains: search, mode: "insensitive" },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const rooms: Room[] = [];
 
   if (rooms.length === 0) {
     return (

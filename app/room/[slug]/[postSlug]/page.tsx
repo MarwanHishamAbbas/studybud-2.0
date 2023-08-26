@@ -15,13 +15,13 @@ import PostCommentInput from "@/components/room/post/PostCommentInput";
 import PostComments from "@/components/room/post/PostComments";
 import { MessageCircle } from "lucide-react";
 
-interface pageProps {
+interface PostPageProps {
   params: {
     postSlug: string;
   };
 }
 
-const page: FC<pageProps> = async ({ params }) => {
+export default async function PostPage({ params }: PostPageProps) {
   const user: User | null = await currentUser();
   const { postSlug } = params;
 
@@ -103,6 +103,4 @@ const page: FC<pageProps> = async ({ params }) => {
       </main>
     </div>
   );
-};
-
-export default page;
+}

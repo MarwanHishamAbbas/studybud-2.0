@@ -9,13 +9,13 @@ import { UserCheck2 } from "lucide-react";
 import Loading from "@/components/shared/Loading";
 import PostsFeed from "@/components/room/post/PostsFeed";
 
-interface pageProps {
+interface RoomPageProps {
   params: {
     slug: string;
   };
 }
 
-const page: FC<pageProps> = async ({ params }) => {
+export default async function RoomPage({ params }: RoomPageProps) {
   const user: User | null = await currentUser();
 
   const { slug } = params;
@@ -60,6 +60,4 @@ const page: FC<pageProps> = async ({ params }) => {
       <RoomSubscribers room={room} subscribers={subscribers} />
     </div>
   );
-};
-
-export default page;
+}

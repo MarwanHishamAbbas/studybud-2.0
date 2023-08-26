@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { FC } from "react";
 
 import RoomCard from "./shared/RoomCard";
 import { AlertCircle } from "lucide-react";

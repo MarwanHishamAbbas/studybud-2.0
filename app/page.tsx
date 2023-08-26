@@ -30,8 +30,9 @@ export default async function HomePage({ searchParams }: HomeProps) {
     <main className="lg:grid grid-cols-3 gap-10">
       <div className=" col-span-2 space-y-12">
         <HomeHeader roomsCount={roomsCount.length} />
-
-        <RoomsFeed topic={searchParams.topic} search={searchParams.search} />
+        <Suspense fallback={<Loading />}>
+          <RoomsFeed topic={searchParams.topic} search={searchParams.search} />
+        </Suspense>
       </div>
 
       <Card className="basis-1/4 h-fit sticky top-5 hidden lg:block">

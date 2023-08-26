@@ -9,7 +9,7 @@ interface RoomsFeedProps {
   search?: string;
 }
 
-const RoomsFeed = async ({ topic, search }: RoomsFeedProps) => {
+const RoomsFeed: FC<RoomsFeedProps> = async ({ topic, search }) => {
   const rooms = await db.room.findMany({
     where: {
       topic: topic,

@@ -7,7 +7,7 @@ import Loading from "@/components/shared/Loading";
 import { clerkClient } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
-interface HomeProps {
+interface HomeProps extends ReactElement<any, any> {
   searchParams: {
     topic?: string;
     search?: string;

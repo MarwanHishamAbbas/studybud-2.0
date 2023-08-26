@@ -14,7 +14,7 @@ interface HomeProps extends ReactElement<any, any> {
   };
 }
 
-const Home: FC<HomeProps> = async ({ searchParams }) => {
+const page: FC<HomeProps> = async ({ searchParams }) => {
   const topUsers = await clerkClient.users.getUserList();
   const roomsCount = await db.room.findMany({
     where: {
@@ -65,4 +65,4 @@ const Home: FC<HomeProps> = async ({ searchParams }) => {
   );
 };
 
-export default Home;
+export default page;

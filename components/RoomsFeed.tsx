@@ -9,7 +9,7 @@ interface RoomsFeedProps {
   search?: string;
 }
 
-const RoomsFeed: FC<RoomsFeedProps> = async ({ topic, search }) => {
+export default async function RoomsFeed({ topic, search }: RoomsFeedProps) {
   const rooms = await db.room.findMany({
     where: {
       topic: topic,
@@ -36,6 +36,4 @@ const RoomsFeed: FC<RoomsFeedProps> = async ({ topic, search }) => {
       ))}
     </main>
   );
-};
-
-export default RoomsFeed;
+}

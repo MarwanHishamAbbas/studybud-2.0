@@ -12,8 +12,8 @@ interface HomeProps {
     search?: string;
   };
 }
-const RoomsFeed = lazy(() => import("@/components/RoomsFeed"));
 export default async function HomePage({ searchParams }: HomeProps) {
+  const RoomsFeed = lazy(() => import("@/components/RoomsFeed"));
   const topUsers = await clerkClient.users.getUserList();
   const roomsCount = await db.room.findMany({
     where: {

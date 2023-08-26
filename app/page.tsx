@@ -7,14 +7,13 @@ import Loading from "@/components/shared/Loading";
 import { clerkClient } from "@clerk/nextjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 
-interface HomeProps extends ReactElement<any, any> {
+interface HomeProps {
   searchParams: {
     topic?: string;
     search?: string;
   };
 }
-
-const page: FC<HomeProps> = async ({ searchParams }) => {
+export default async function HomePage({ searchParams }: HomeProps) {
   const topUsers = await clerkClient.users.getUserList();
   const roomsCount = await db.room.findMany({
     where: {
@@ -63,6 +62,4 @@ const page: FC<HomeProps> = async ({ searchParams }) => {
       </Card>
     </main>
   );
-};
-
-export default page;
+}
